@@ -97,7 +97,7 @@ class DatePicker extends HTMLElement {
 		let selectedDay2 = day1;
 		let selectedMonth2 = month1;
 		let selectedYear2 = year1;
-
+        let amount_days = 31;
 		mth_element.textContent = months[month] + ' ' + year;
 		mth_element2.textContent = months2[month1] + ' ' + year1;
 		let date_1 = formatDate(date);
@@ -105,6 +105,7 @@ class DatePicker extends HTMLElement {
 		selected_date_element.textContent = date_1 + " - "+date_2;
 		selected_date_element.dataset.value = selectedDate;
 		populateDates();
+		populateDates2();
 		// EVENT LISTENERS
 		date_picker_element.addEventListener('click', toggleDatePicker);
 		next_mth_element.addEventListener('click', goToNextMonth);
@@ -138,7 +139,7 @@ function goToNextMonth2 (e) {
 		year1++;
 	}
 	mth_element2.textContent = months2[month1] + ' ' + year1;
-	populateDates();
+	populateDates2();
 }
 
 function goToPrevMonth (e) {
@@ -158,64 +159,61 @@ function goToPrevMonth2 (e) {
 		year1--;
 	}
 	mth_element2.textContent = months2[month1] + ' ' + year1;
-	populateDates();
+	populateDates2();
 }
 
 function populateDates (e) {
+	
 	days_element.innerHTML = '';
-	days_element2.innerHTML = '';
-	let amount_days = 31;
-
-	if (month == 1 || month1 == 1 ) {
-		amount_days = 28;
-	}
-    
 	if (month == 3 || month == 5 || month==8 || month==11) {
 		amount_days = 30;
 	}
-	if (month1 == 3 || month1 == 5 || month1 == 8 || month1 == 11) {
-		amount_days = 30;
-	}
+	
 	if (month == 0 || month == 2 || month==4 || month==6 || month==7 || month==9 || month==10) {
 		amount_days = 31;
 	}
 	
-	
-
 	for (let i = 0; i < amount_days; i++) {
-		const day_element = document.createElement('div');
-		
-		day_element.classList.add('day');
-		
-		day_element.textContent = i + 1;
-        
-		if (selectedDay == (i + 1) && selectedYear == year && selectedMonth == month) {
-			day_element.classList.add('selected');
+			const day_element = document.createElement('div');
 			
+			day_element.classList.add('day');
+			
+			day_element.textContent = i + 1;
+			
+			if (selectedDay == (i + 1) && selectedYear == year && selectedMonth == month) {
+				day_element.classList.add('selected');
+				
+			}
+	
+			day_element.addEventListener('click', function () {
+				selectedDate = new Date(year + '-' + (month + 1) + '-' + (i + 1));
+				selectedDay = (i + 1);
+				selectedMonth = month;
+				selectedYear = year;
+	
+				selected_date_element.textContent = formatDate(selectedDate)+" - "+formatDate2(selectedDate2);
+				selected_date_element.dataset.value = selectedDate;
+	
+				populateDates();
+			});
+			
+	       days_element.appendChild(day_element);
+		
 		}
 
-		day_element.addEventListener('click', function () {
-			selectedDate = new Date(year + '-' + (month + 1) + '-' + (i + 1));
-			selectedDay = (i + 1);
-			selectedMonth = month;
-			selectedYear = year;
-
-			selected_date_element.textContent = formatDate(selectedDate)+" - "+formatDate2(selectedDate2);
-			selected_date_element.dataset.value = selectedDate;
-
-			populateDates();
-		});
-		
-
-		days_element.appendChild(day_element);
-	
+}
+function populateDates2 () {
+	days_element2.innerHTML = '';
+	if (month == 1 || month1 == 1 ) {
+		amount_days = 28;
 	}
-
-
-for (let j = 0; j < amount_days; j++) {
+	if (month1 == 3 || month1 == 5 || month1 == 8 || month1 == 11) {
+		amount_days = 30;
+	}
+	for (let j = 0; j < amount_days; j++) {
 		const day_element2 = document.createElement('div');
 		day_element2.classList.add('day2');
-        day_element2.textContent = j + 1;
+		day_element2.textContent = j + 1;
 		if (selectedDay2 == (j + 1) && selectedYear2 == year1 && selectedMonth2 == month1) {
 			day_element2.classList.add('selected');
 		}
@@ -225,11 +223,10 @@ for (let j = 0; j < amount_days; j++) {
 			selectedDay2 = (j + 1);
 			selectedMonth2 = month1;
 			selectedYear2 = year1;
-
 			selected_date_element.textContent = formatDate(selectedDate)+" - "+formatDate2(selectedDate2);
 			selected_date_element.dataset.value = selectedDate2;
 
-			populateDates();
+			populateDates2();
 		});
 
 		days_element2.appendChild(day_element2);
@@ -237,45 +234,45 @@ for (let j = 0; j < amount_days; j++) {
 }
 
 // VALIDATING ELEMENTS FUNCTIONS
-function checkEventPathForClass (path, selector) {
-	for (let i = 0; i < path.length; i++) {
-		if (path[i].classList && path[i].classList.contains(selector)) {
-			return true;
+	function checkEventPathForClass (path, selector) {
+		for (let i = 0; i < path.length; i++) {
+			if (path[i].classList && path[i].classList.contains(selector)) {
+				return true;
+			}
 		}
+		
+		return false;
 	}
-	
-	return false;
-}
-function formatDate (d) {
-	let day = d.getDate();
-	if (day < 10) {
-		day = '0' + day;
+	function formatDate (d) {
+		let day = d.getDate();
+		if (day < 10) {
+			day = '0' + day;
+		}
+
+		let month = d.getMonth() + 1;
+		if (month < 10) {
+			month = '0' + month;
+		}
+
+		let year = d.getFullYear();
+
+		return day + ' / ' + month + ' / ' + year;
 	}
+	function formatDate2 (d) {
+		let day = d.getDate();
+		if (day < 10) {
+			day = '0' + day;
+		}
 
-	let month = d.getMonth() + 1;
-	if (month < 10) {
-		month = '0' + month;
+		let month = d.getMonth() + 1;
+		if (month < 10) {
+			month = '0' + month;
+		}
+
+		let year = d.getFullYear();
+
+		return day + ' / ' + month + ' / ' + year;
 	}
-
-	let year = d.getFullYear();
-
-	return day + ' / ' + month + ' / ' + year;
-}
-function formatDate2 (d) {
-	let day = d.getDate();
-	if (day < 10) {
-		day = '0' + day;
-	}
-
-	let month = d.getMonth() + 1;
-	if (month < 10) {
-		month = '0' + month;
-	}
-
-	let year = d.getFullYear();
-
-	return day + ' / ' + month + ' / ' + year;
-}
 }
 
 }
