@@ -58,7 +58,7 @@ h1 span {
 	position: absolute;
 	top: 100%;
 	left: 0;
-
+    z-index: 1;
 	background-color: #FFF;
 }
 .date-picker .dates2 {
@@ -66,7 +66,7 @@ h1 span {
 	position: absolute;
 	top: 100%;
 	right: 0;
-
+     z-index: 1;
 	background-color: #FFF;
 }
 

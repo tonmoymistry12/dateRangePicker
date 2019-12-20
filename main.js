@@ -1,56 +1,118 @@
-const date_picker_element = document.querySelector('.date-picker');
-const selected_date_element = document.querySelector('.date-picker .selected-date');
-const dates_element = document.querySelector('.date-picker .dates');
-const dates_element2 = document.querySelector('.date-picker .dates2');
-const mth_element = document.querySelector('.date-picker .dates .month .mth');
-const mth_element2 = document.querySelector('.date-picker .dates2 .month2 .mth2');
-const next_mth_element = document.querySelector('.date-picker .dates .month .next-mth');
-const next_mth_element2 = document.querySelector('.date-picker .dates2 .month2 .next-mth2');
-const prev_mth_element = document.querySelector('.date-picker .dates .month .prev-mth');
-const prev_mth_element2 = document.querySelector('.date-picker .dates2 .month2 .prev-mth2');
-const days_element = document.querySelector('.date-picker .dates .days');
-const days_element2 = document.querySelector('.date-picker .dates2 .days2');
+class DatePicker extends HTMLElement { 
+	constructor () {
+	  super() 
+		const date_picker_element_inDom = document.createElement('div');
+		date_picker_element_inDom.className = "date-picker";
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const months2 = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		const selected_date_element_inDom = document.createElement('div');
+		selected_date_element_inDom.className = "selected-date";
+		date_picker_element_inDom.appendChild(selected_date_element_inDom);
 
-let date = new Date();
-let day = date.getDate();
-let month = date.getMonth();
-let year = date.getFullYear();
+		const dates_element_inDom = document.createElement('div');
+		dates_element_inDom.className ="dates";
+		date_picker_element_inDom.appendChild(dates_element_inDom)
 
-let date1 = new Date();
-let day1 = date.getDate();
-let month1 = date.getMonth();
-let year1 = date.getFullYear();
+		const month_element_inDom = document.createElement('div');
+		month_element_inDom.className = "month";
+		dates_element_inDom.appendChild(month_element_inDom);
 
-let selectedDate = date;
-let selectedDay = day;
-let selectedMonth = month;
-let selectedYear = year;
+		const prev_mth_element_inDom = document.createElement('div');
+		prev_mth_element_inDom.className = "arrows prev-mth";
+		month_element_inDom.appendChild(prev_mth_element_inDom);
 
-let selectedDate2 = date1;
-let selectedDay2 = day1;
-let selectedMonth2 = month1;
-let selectedYear2 = year1;
+		const mth_element_inDom = document.createElement('div');
+		mth_element_inDom.className = "mth";
+		month_element_inDom.appendChild(mth_element_inDom);
 
-mth_element.textContent = months[month] + ' ' + year;
-mth_element2.textContent = months2[month1] + ' ' + year1;
-let date_1 = formatDate(date);
-let date_2 = formatDate2(date);
-selected_date_element.textContent = date_1 + " - "+date_2;
-selected_date_element.dataset.value = selectedDate;
+		const next_mth_element_inDom = document.createElement('div');
+		next_mth_element_inDom.className = "arrows next-mth";
+		month_element_inDom.appendChild(next_mth_element_inDom);
 
-populateDates();
+		const days_element_inDom = document.createElement('div');
+		days_element_inDom.className = "days";
+		dates_element_inDom.appendChild(days_element_inDom);
 
-// EVENT LISTENERS
-date_picker_element.addEventListener('click', toggleDatePicker);
-next_mth_element.addEventListener('click', goToNextMonth);
-prev_mth_element.addEventListener('click', goToPrevMonth);
-next_mth_element2.addEventListener('click', goToNextMonth2);
-prev_mth_element2.addEventListener('click', goToPrevMonth2);
+		const dates_element2_inDom = document.createElement('div');
+		dates_element2_inDom.className ="dates2";
+		date_picker_element_inDom.appendChild(dates_element2_inDom);
 
-// FUNCTIONS
+		const month_element2_inDom = document.createElement('div');
+		month_element2_inDom.className = "month2";
+		dates_element2_inDom.appendChild(month_element2_inDom);
+
+		const prev_mth_element2_inDom = document.createElement('div');
+		prev_mth_element2_inDom.className = "arrows prev-mth2";
+		month_element2_inDom.appendChild(prev_mth_element2_inDom);
+
+		const mth_element2_inDom = document.createElement('div');
+		mth_element2_inDom.className = "mth2";
+		month_element2_inDom.appendChild(mth_element2_inDom);
+
+		const next_mth_element2_inDom = document.createElement('div');
+		next_mth_element2_inDom.className = "arrows next-mth2";
+		month_element2_inDom.appendChild(next_mth_element2_inDom);
+
+		const days_element2_inDom = document.createElement('div');
+		days_element2_inDom.className = "days2";
+		dates_element2_inDom.appendChild(days_element2_inDom);
+        const x = document.querySelector("date-picker");
+		x.appendChild(date_picker_element_inDom);
+		const date_picker_element = date_picker_element_inDom;
+		const selected_date_element = selected_date_element_inDom;
+		const dates_element = dates_element_inDom;
+		const mth_element = mth_element_inDom;
+		const next_mth_element = next_mth_element_inDom;
+		const prev_mth_element = prev_mth_element_inDom;
+		const days_element = days_element_inDom;
+
+		const dates_element2 = dates_element2_inDom;
+		const mth_element2 = mth_element2_inDom;
+		const next_mth_element2 = next_mth_element2_inDom;
+		const prev_mth_element2 = prev_mth_element2_inDom;
+		const days_element2 = days_element2_inDom;
+		prev_mth_element2.innerHTML="&laquo;";
+		prev_mth_element.innerHTML="&laquo;";
+		next_mth_element2.innerHTML="&raquo;";
+		next_mth_element.innerHTML="&raquo;";
+
+		const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		const months2 = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+		let date = new Date();
+		let day = date.getDate();
+		let month = date.getMonth();
+		let year = date.getFullYear();
+
+		let date1 = new Date();
+		let day1 = date.getDate();
+		let month1 = date.getMonth();
+		let year1 = date.getFullYear();
+
+		let selectedDate = date;
+		let selectedDay = day;
+		let selectedMonth = month;
+		let selectedYear = year;
+
+		let selectedDate2 = date1;
+		let selectedDay2 = day1;
+		let selectedMonth2 = month1;
+		let selectedYear2 = year1;
+
+		mth_element.textContent = months[month] + ' ' + year;
+		mth_element2.textContent = months2[month1] + ' ' + year1;
+		let date_1 = formatDate(date);
+		let date_2 = formatDate2(date);
+		selected_date_element.textContent = date_1 + " - "+date_2;
+		selected_date_element.dataset.value = selectedDate;
+		populateDates();
+		// EVENT LISTENERS
+		date_picker_element.addEventListener('click', toggleDatePicker);
+		next_mth_element.addEventListener('click', goToNextMonth);
+		prev_mth_element.addEventListener('click', goToPrevMonth);
+		next_mth_element2.addEventListener('click', goToNextMonth2);
+		prev_mth_element2.addEventListener('click', goToPrevMonth2);
+
+		// FUNCTIONS
 function toggleDatePicker (e) {
 	if (!checkEventPathForClass(e.path, 'dates')) {
 		dates_element.classList.toggle('active');
@@ -104,12 +166,21 @@ function populateDates (e) {
 	days_element2.innerHTML = '';
 	let amount_days = 31;
 
-	if (month == 1) {
+	if (month == 1 || month1 == 1 ) {
 		amount_days = 28;
 	}
-    if (month1 == 1) {
-		amount_days = 28;
+    
+	if (month == 3 || month == 5 || month==8 || month==11) {
+		amount_days = 30;
 	}
+	if (month1 == 3 || month1 == 5 || month1 == 8 || month1 == 11) {
+		amount_days = 30;
+	}
+	if (month == 0 || month == 2 || month==4 || month==6 || month==7 || month==9 || month==10) {
+		amount_days = 31;
+	}
+	
+	
 
 	for (let i = 0; i < amount_days; i++) {
 		const day_element = document.createElement('div');
@@ -205,4 +276,26 @@ function formatDate2 (d) {
 
 	return day + ' / ' + month + ' / ' + year;
 }
+}
+
+}
+  
+customElements.define('date-picker', DatePicker);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
